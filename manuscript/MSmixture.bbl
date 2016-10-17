@@ -1,0 +1,130 @@
+\begin{thebibliography}{22}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{Abadi \emph{et~al.}(2013)Abadi, Botha \& Altwegg}]{AbadiEtAl2013}
+Abadi, F., Botha, A. \& Altwegg, R. (2013) Revisiting the effect of capture
+  heterogeneity on survival estimates in capture-mark-recapture studies: does
+  it matter? \emph{PloS one}, \textbf{8}(4), e62636.
+
+\bibitem[{Brownie \emph{et~al.}(1993)Brownie, Hines, Nichols, Pollock \&
+  Hestbeck}]{Brownie1993}
+Brownie, C., Hines, J.E., Nichols, J.D., Pollock, K.H. \& Hestbeck, J.B. (1993)
+  Capture-recapture studies for multiple strata including non-markovian
+  transitions. \emph{Biometrics}, \textbf{49}, 1173--1187.
+
+\bibitem[{Caswell(2001)}]{Caswell2001}
+Caswell, H. (2001) \emph{Matrix Population Models, 2nd Edition}. Sinauer,
+  Sunderland, MA.
+
+\bibitem[{Caswell \emph{et~al.}(1999)Caswell, Fujiwara \&
+  Brault}]{CaswellEtAl1999}
+Caswell, H., Fujiwara, M. \& Brault, S. (1999) Declining survival probability
+  threatens the north atlantic right whale. \emph{Proceedings of the National
+  Academy of Sciences}, \textbf{96}(6), 3308--3313.
+
+\bibitem[{Clapham \emph{et~al.}(2002)Clapham, Brault, Caswell, Fujiwara, Kraus,
+  Pace \& Wade}]{ClaphamEtAl2002}
+Clapham, P., Brault, S., Caswell, H., Fujiwara, M., Kraus, S., Pace, R. \&
+  Wade, P. (2002) Report of the working group on survival estimation for north
+  atlantic right whales. \emph{Available from the Northeast Fisheries Science
+  Center}, \textbf{166}.
+
+\bibitem[{Conn \emph{et~al.}(2011)Conn, Gorgone, Jugovich, Byrd \&
+  Hansen}]{ConnEtAl2011}
+Conn, P.B., Gorgone, A.M., Jugovich, A.R., Byrd, B.L. \& Hansen, L.J. (2011)
+  Accounting for transients when estimating abundance of bottlenose dolphins in
+  choctawhatchee bay, florida. \emph{Journal of Wildlife Management},
+  \textbf{75}, 569--579.
+
+\bibitem[{Fieberg \& Conn(2014)}]{FiebergConn2014}
+Fieberg, J.R. \& Conn, P.B. (2014) A hidden markov model to identify and adjust
+  for selection bias: an example involving mixed migration strategies.
+  \emph{Ecology and evolution}, \textbf{4}(10), 1903--1912.
+
+\bibitem[{Fujiwara \& Caswell(2001)}]{FujiwaraCaswell2001}
+Fujiwara, M. \& Caswell, H. (2001) Demography of the endangered north atlantic
+  right whale. \emph{Nature}, \textbf{414}(6863), 537--541.
+
+\bibitem[{Fujiwara \& Caswell(2002{\natexlab{a}})}]{FujiwaraCaswell2002}
+Fujiwara, M. \& Caswell, H. (2002{\natexlab{a}}) Estimating population
+  projection matrices from multi-stage mark--recapture data. \emph{Ecology},
+  \textbf{83}(12), 3257--3265.
+
+\bibitem[{Fujiwara \& Caswell(2002{\natexlab{b}})}]{FujiwaraCaswell2002b}
+Fujiwara, M. \& Caswell, H. (2002{\natexlab{b}}) A general approach to
+  temporary emigration in mark--recapture analysis. \emph{Ecology},
+  \textbf{83}(12), 3266--3275.
+
+\bibitem[{Hestbeck \emph{et~al.}(1991)Hestbeck, Nichols \&
+  Malecki}]{Hestbeck1991}
+Hestbeck, J.B., Nichols, J.D. \& Malecki, R.A. (1991) Estimates of movement and
+  site fidelity using mark-resight data of wintering canada geese.
+  \emph{Ecology}, \textbf{72}, 523--533.
+
+\bibitem[{Johnson \emph{et~al.}(2016)Johnson, Laake, Melin, DeLong
+  \emph{et~al.}}]{JohnsonEtAl2016}
+Johnson, D.S., Laake, J.L., Melin, S.R., DeLong, R.L. \emph{et~al.} (2016)
+  Multivariate state hidden markov models for mark-recapture data.
+  \emph{Statistical Science}, \textbf{31}(2), 233--244.
+
+\bibitem[{Laake \emph{et~al.}(2013)Laake, Johnson \& Conn}]{LaakeEtAl2013}
+Laake, J.L., Johnson, D.S. \& Conn, P.B. (2013) marked: an r package for
+  maximum likelihood and markov chain monte carlo analysis of
+  capture--recapture data. \emph{Methods in Ecology and Evolution},
+  \textbf{4}(9), 885--890.
+
+\bibitem[{Nichols \emph{et~al.}(1992)Nichols, Sauer, Pollock \&
+  Hestbeck}]{Nichols1992}
+Nichols, J.D., Sauer, J.R., Pollock, K.H. \& Hestbeck, J.B. (1992) Estimating
+  transition probabilities for stage-based population projection matrices using
+  capture-recapture data. \emph{Ecology}, \textbf{73}, 306--312.
+
+\bibitem[{Pledger(2000)}]{Pledger2000}
+Pledger, S. (2000) Unified maximum likelihood estimates for closed
+  capture-recapture models using mixtures. \emph{Biometrics}, \textbf{56},
+  434--442.
+
+\bibitem[{Pledger \emph{et~al.}(2003)Pledger, Pollock \&
+  Norris}]{PledgerEtAl2003}
+Pledger, S., Pollock, K.H. \& Norris, J.L. (2003) Open capture-recapture models
+  with heterogeneity: I. cormack-jolly-seber model. \emph{Biometrics},
+  \textbf{59}(4), 786--794.
+
+\bibitem[{Pledger \emph{et~al.}(2010)Pledger, Pollock \&
+  Norris}]{PledgerEtAl2010}
+Pledger, S., Pollock, K.H. \& Norris, J.L. (2010) Open capture--recapture
+  models with heterogeneity: Ii. jolly--seber model. \emph{Biometrics},
+  \textbf{66}(3), 883--890.
+
+\bibitem[{Pradel(2005)}]{Pradel2005}
+Pradel, R. (2005) Multievent: An extension of multistate capture-recapture
+  models to uncertain states. \emph{Biometrics}, \textbf{61}, 442--447.
+
+\bibitem[{Pradel \emph{et~al.}(1997)Pradel, Hines, Lebreton \&
+  Nichols}]{PradelEtAl1997}
+Pradel, R., Hines, J.E., Lebreton, J.D. \& Nichols, J.D. (1997)
+  Capture-recapture survival models taking account of transients.
+  \emph{Biometrics}, 60--72.
+
+\bibitem[{Schwarz \emph{et~al.}(1993)Schwarz, Schweigert \&
+  Arnason}]{Schwarz1993}
+Schwarz, C.J., Schweigert, J.F. \& Arnason, A.N. (1993) Estimating migration
+  rates using tag-recovery data. \emph{Biometrics}, \textbf{49}, 177--193.
+
+\bibitem[{Wade \& Clapham(Unpublished)}]{WadeClaphamUnpublished}
+Wade, P.R. \& Clapham, P.J. (Unpublished) The influence of spatial distribution
+  on survival estimates: use of cluster analysis to address heterogeneity in
+  north atlantic right whales. \emph{Unpublished manuscript.}
+
+\bibitem[{Zucchini \& Mac{D}onald(2009)}]{ZucchiniMacDonald2009}
+Zucchini, W. \& Mac{D}onald, I.L. (2009) \emph{Hidden Markov models for time
+  series: an introduction using R}, vol. 150. CRC press.
+
+\end{thebibliography}

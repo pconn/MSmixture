@@ -1,0 +1,208 @@
+% besdoc.tex V1.0, 17 March 2011
+
+\documentclass[times,mee,doublespace,]{besauth2}
+%%\documentclass[times,mee,]{besauth}
+
+\newcommand{\journalnamelc}{British Ecological Society}
+\newcommand{\journalabb}{British Ecological Society}
+\newcommand{\journalclassshort}{BES}
+%%\newcommand{\journalname}{British Ecological Society}
+\usepackage{epstopdf,comment}
+
+\usepackage{moreverb}
+
+\usepackage[colorlinks,bookmarksopen,bookmarksnumbered,citecolor=red,urlcolor=red]{hyperref}
+
+
+\usepackage{lineno}
+
+\newcommand\BibTeX{{\rmfamily B\kern-.05em \textsc{i\kern-.025em b}\kern-.08em
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\bibpunct[; ]{(}{)}{;}{}{}{,}
+
+\def\volumeyear{2016}
+\def\VOC{VO}
+
+\begin{document}
+\runningheads{P.~B.~Conn, D.~L.~Miller, D.~S.~Johnson, et al.}{Multistate mark-recapture mixture models}
+
+\papertype{Article}
+
+\title{Using multistate mark-recapture mixture models to account for latent subpopulation structure in survival and state transition probabilities: North Atlantic right whales \footnotemark[2]}
+
+\author{Paul B. Conn\affil{1}\corrauth, David L. Miller \affil{2}, Devin S. Johnson\affil{1}, Richard M. Pace III\affil{2}, Paul R. Wade\affil{1}, Kenady Wilson\affil{1}, and Peter J. Corkeron \affil{2}}
+
+
+\address{\affilnum{1}Marine Mammal Laboratory, Alaska Fisheries Science Center, National Marine Fisheries Service, NOAA, 7600 Sand Point Way NE, Seattle, WA 98115 USA; \affilnum{2} Northeast Fisheries Science Center, National Marine Fisheries Service, NOAA
+NOAA, 166 Water Street, Woods Hole, MA 02543 USA}
+
+\corraddr{paul.conn@noaa.gov}
+
+\begin{abstract}
+ %\noindent {\emph{Summary}}
+\small
+\begin{enumerate}
+\item  Animal ecologists often use multistate mark-recapture models to analyze survival and state transition probabilities in individually identifiable animal populations.  These models often assume that individuals belong to a single population with homogeneous vital rates and state transition probabilities, except where static individual covariates (e.g. sex) can be used to partition the population.
+
+\item Some populations are comprised of several population subgroups subscribing to different migratory strategies.  In such cases, traditional multistate mark-recapture models will only provide estimates of mean population dynamics relative to the marked sample.  Further, heterogeneity in detection can be expected, and may bias inference.
+
+\item We develop a multistate mark-recapture modeling framework based on finite mixtures that can be used to relax the homogeneity assumption of traditional multistate models.  This framework, together with commonly available model selection and averaging tools, can be used to identify a reasonable number of population subgroups and investigate their relative dynamics (i.e., survival and state transition probabilities).  We use simulation to verify that parameters can be identified within this framework.
+
+\item We apply our approach to North Atlantic right whales (\textit{Eubalaena glacialis}) on the east coast of North America. This population is of considerable conservation interest, but difficult to study because individuals have different migratory strategies that make detection probabilities highly heterogeneous.
+
+\end{enumerate}
+
+
+ Word count: xxx
+\end{abstract}
+
+\keywords{clustering, \textit{Eubalaena glacialis}, mixture model, multistate mark-recapture, population substructure, survival, North Atlantic right whale}
+
+\maketitle \linenumbers
+
+\def\VAR{{\rm Var}\,}
+\def\COV{{\rm Cov}\,}
+\def\Prob{{\rm P}\,}
+\def\bfX{\bf X}
+\def\bfbeta{\boldsymbol{\beta}}
+\def\bfdelta{\boldsymbol{\delta}}
+\def\bfeta{\boldsymbol{\eta}}
+
+
+
+\section{Introduction}
+
+Ecologists often use multistate mark-recapture models \citep[hereafter, MSMR models][]{Hestbeck1991,Brownie1993,Schwarz1993} to study survival and state transition probabilities in wild animal populations.  State transition probabilities can include movement among geographical strata, or transitions among other ecologically relevant states (e.g., disease status or breeding state).  Importantly, MSMR models can be used to parameterize population models needed for conservation and management \citep{Nichols1992,Caswell2001}.
+
+One assumption of canonical MSMR models is that individuals within a given state (geographical strata, disease state, breeding/nonbreeding) have homogeneous survival and state transition probabilities.  This assumption can be relaxed if there are static covariates (e.g. sex) that can be used to partition the marked population into groups.  For instance, different state transition matrices could be estimated for males and females if sex was observable.
+
+For many populations, latent subpopulation structure may affect survival and state transition probabilities.  For instance, many species of waterfowl, passerines, cervids, and salmonids are composed of both migratory and resident individuals, and it may be difficult to discriminate between the two groups based on appearance alone. One possibility in such cases is to study populations in locations or times where overlap of subpopulations is minimized \citep[e.g. studying residents in the winter when migrants are not present][]{Hestbeck1991}.  However, this is not always possible.
+
+Various model-based solutions for dealing with subpopulation overlap have been proposed, depending on the unique sampling situation.  For instance, researchers have developed mixture models to account for the presence of transients and/or migrants while estimating survival \citep{PradelEtAl1997,FiebergConn2014} and abundance \citep{ConnEtAl2011} with capture-recapture data. These models allow uncertainty about class membership (e.g. resident vs. transient) when conspecifics of both types can be sampled in the same location.  However, to our knowledge, the general question of how to fit multistate mark-recapture models with multiple latent population subgroups has not been investigated.  One possibility is to formulate a hidden Markov modeling framework for such data, where group membership of individuals with different patterns of encounters are modeled probabilistically. This idea is similar to the finite mixture modeling framework sometimes used to account for heterogeneity in detection when estimating single site abundance or survival \citep[cf.][]{Pledger2000,PledgerEtAl2003,PledgerEtAl2010}
+
+The endangered North Atlantic right whale (\textit{Eubalaena glacialis}; hereafter, NARW) are one population which would benefit from such a generalized multistate analysis. NARW survival has historically been studied using Cormack-Jolly-Seber (CJS) mark-recapture models \citep{CaswellEtAl1999} and traditional MSMR models \citep{FujiwaraCaswell2002,FujiwaraCaswell2002b} applied to NARW photo-identification records.  Results of such analyses were important for establishing a decline in adult survival from the early 1980s to late 1990s, and for raising conservation concerns about population viability \citep{CaswellEtAl1999,FujiwaraCaswell2001}.
+
+Although CJS and MSMR estimates have proved useful for conservation and management, there has been some speculation that the analyses conducted with these models may not adequately capture heterogeneity in resighting and availability patterns \citep{ClaphamEtAl2002}.  For instance, original estimates of survival from CJS models \citep{CaswellEtAl1999} evidenced strong support for models in which capture probability was a logit-linear function of an "offshore index" - the proportion of years for which a particular whale had only been observed in offshore sites.  Such sites received less survey effort than sites closer to shore, particularly in the mid-1990s.  In an unpublished manuscript, \citet{WadeClaphamUnpublished} suggested that Caswell et al.'s (1999) approach may have not been sufficient to adequately address heterogeneity in the seasonal patterns of attendance exhibited by whales with different migratory strategies.  Instead, Wade and Clapham (Unpublished) employed cluster analysis to group whales with similar migratory behavior prior to running a CJS-based survival analysis, finding support for models with four clusters of whales with distinct movement and observation patterns.  These groups also exhibited biologically meaningful differences in survival.
+
+Despite the importance of detection heterogeneity on survival, which can result in negatively biased survival estimates \citep{AbadiEtAl2013}, there has been little published work in the primary literature investigating the consequences of detection heterogeneity on NARW survival since the first estimates of \citet{CaswellEtAl1999}.  Part of the reason for this might have to do with violation of statistical mechanics.  Specifically, it is generally not appropriate to construct a predictive covariate for use in a statistical model based on knowledge of the response variable.  For instance, the clustering approach used by \citet{WadeClaphamUnpublished} could possibly confound detection patterns with mortality if whales that died and had fewer detections were more often assigned to one particular cluster over another.  The ``offshore index" covariate used by \citet{CaswellEtAl1999} also suffers from this issue.  For instance, animals who are seen once by definition have an index covariate of 0.0 or 1.0, and will by assigned either maximum or minimum survival.
+
+Recent developments in mark-recapture modeling suggest a viable alternative.  For instance, capture-recapture data are increasingly analyzed using hidden Markov models \citep[HMMs][]{ZucchiniMacDonald2009} that allow the detection process to be linked to survival and movement processes in a more general way.  First applied to capture-recapture data by \citet{Pradel2005}, these models decouple detection types from underlying ``states" of the animal and formally permit uncertainty about an animal's underlying state.  Recently, \citet{JohnsonEtAl2016} extended this modeling type to multivariate states, which may or may not interact (e.g., location and tagging state of sea lions).  We propose to use this framework for estimation of survival and state transition probabilities when the membership among different latent population groups is unknown.
+
+This paper is structured as follows.  First, we introduce a general framework for conducting multistate mark-recapture analysis with multiple population subgroups.  Second, we use simulation to verify that our estimation approach can recover the survival and state transition matrices used to generate data.  Next, we apply our modeling framework to a photograph-based NARW mark-recapture dataset.  Finally, we discuss relevance of our research - both as a general modeling framework as well as specific implications for NARW conservation and management.
+
+
+\section{Materials and methods}
+
+\subsection{Model development}
+
+\subsubsection{Sampling}
+
+As with canonical MSMR models, we suppose that the investigator individually identifies animals through artificial or natural markings at a sequence of discrete sampling occasions (call these  $t \in \{ 1, 2, \hdots, T \}$). Animals may be encountered in one of $s \in \{ 1, 2, \hdots, S \}$ states, which may be geographical locations or dynamical states such as disease or breeding status. For instance, if sampling is conducted in three geographical states (A, B, and C) for 5 sampling occasions, the encounter history
+\begin{eqnarray*}
+  H_i = ABB0C
+\end{eqnarray*}
+would indicate an animal that was first encountered in state A at time 1, was observed in state B at times 2 and 3, was not observed at time 4, and was observed in state C at time 5.  Our objective will be to estimate survival, state transition probabilities, and detection probabilities from these data when there is latent subpopulation structure.
+
+\subsubsection{Notation and basic model structure}
+
+We describe multistate mixture models in similar notation to that typically used for MSMR data (Table \ref{tab:notation}). We assume that mixture (i.e. subpopulation) membership does not change over time; thus, transition probabilities among states are governed by mixture-specific survival and state transition probabilities.  
+
+
+
+\subsubsection{Model assumptions}
+
+No switching among population subgroups; ``instantaneous" sampling
+
+\subsubsection{Computing}
+
+Several software packages are available to fit hidden Markov models to capture-recapture data, either in a univariate \citep[e.g. E-SURGE[]{ChoquetEtAl2009b)} or a multivariate state framework \citep[\texttt{marked}][]{LaakeEtAl2013,JohnsonEtAl2016}.  Analyses reported in this paper use the \texttt{marked} package and can be implemented in the R programming environment \citep{RTeam2015}
+
+\subsection{Simulation study}
+
+\subsection{Example: North Atlantic right whales}
+
+\section{Results}
+
+\section{Discussion}
+
+
+\section{Conclusion}
+
+ \acks{
+ Views expressed are those of the authors and do not necessarily represent findings or policy of any government agency.  Use of trade or brand names does not indicate endorsement by the U.S. government.}
+
+
+\vspace{.3in}
+\section{Data accessibility}
+R scripts and data necessary to recreate analyses have been collated into an R package, which is currently available at \url{https://github.com/pconn/MSmixture}.  We plan to publish the package to an online archive/repository upon acceptance. \\
+
+
+\bibliographystyle{bes}
+\bibliography{master_bib}
+
+
+\pagebreak
+\begin{table}[ht]
+\caption{Definitions of parameters and statistics used in the multistate mixture model.
+}
+\label{tab:notation}
+\raggedright
+\begin{tabular}{p{2cm}p{13cm}}
+  \hline
+   Quantity & Definition \\
+  \hline
+   \textbf{A. Statistics}  &   \\ 
+  $H_i$ & Encounter history for individual $i$ \\
+  $S$ & Number of states \\
+  $T$ & Number of sampling occasions \\
+  $M$ & Number of mixtures (population subgroups) \\
+  \textbf{B. Parameters } & \\
+  $\pi_{s,t,m}$ & Probability that an individual first captured in state $s$ at time $t$ is a member of population subgroup $m$ \\
+  $S_{s,t,m}$ & Probability that an animal alive and in state $s$ at time $t$ and from population subgroup $m$ is alive at time $t+1$. \\
+  $\psi_{t,m}^{s_1,s_2}$ & Probability that an animal of population subgroup $m$ that is alive and in state $s_1$ at time $t$ is in state $s_2$ at time $(t+1)$, given that it survives from $t \rightarrow (t+1)$ \\
+  $\phi_{t,m}^{s_1,s_2}$ & It will sometimes be convenient to use the product $\phi_{t,m}^{s_1,s_2} = S_{s,t,m} \psi_{t,m}^{s_1,s_2}$ \\
+  $p_{s,t,m}$ & Probability that a member of population subgroup $m$ is detected at time $t$ given that they are in state $s$.  \\
+\hline
+\end{tabular}
+\\
+%$\dag$ Refitted model; see \textit{Results}.
+\end{table}
+
+
+%\pagebreak
+%\begin{table}[ht]
+%\caption{A summary of model selection results and estimated abundance for the four models fitted to bearded seal counts.  The models include formulations with or without predictive covariates ($cov=1$ or 0, respectively) , and with or without the preferential sampling parameter $b$ estimated ($b=1$ or 0, respectively) .  All models included spatially autocorrelated random effects on log-scale abundance intensity.  Shown are the log integrated likelihood, the number of fixed effect parameters, $\Delta \textrm{AIC}$, AIC model weights, and estimated apparent abundance over the landscape ($\hat{N}$) together with a Hessian-based standard error estimate.
+%}
+%\label{tab:aic}
+%\raggedright
+%\begin{tabular}{lccccc}
+%  \hline
+%  Model & Log likelihood & Params & $\Delta \textrm{AIC}$ & Wgt & $\hat{N}$(SE) \\
+%  \hline
+%  $M_{cov=0,b=0}$ & -2667.1 & 3 & 21.7 & 0.00 & 68556 (7408)\\
+%  $M_{cov=0,b=1}$ & -2665.3 & 4 & 20.1 & 0.00 & 45857 (5114) \\
+%  $M_{cov=1,b=0}$ & -2650.3 & 9 &  0.0 & 0.53 & 59312$^\dag$ (5231)  \\
+%  $M_{cov=1,b=1}$ & -2649.4 & 10 & 0.3 & 0.47 & 49826 (10369) \\
+%\hline
+%\end{tabular}
+%\\
+%$\dag$ Refitted model; see \textit{Results}.
+%\end{table}
+
+\pagebreak
+%\begin{figure*}
+%\begin{center}
+%\includegraphics[width=170mm]{Pref_sampling_diag.pdf}
+%\caption{A depiction of potential inferential obstacles when data from marked animals are %used to address mixed migration strategies. The migratory strategy of an animal will often %be unknown at the time of marking, but observational data may be used to help infer the %proportion of animals subscribing to each strategy, as well as the probability of %migrating for conditional migrants ($\theta_t$).
+%behavior} \label{fig:state_diagram}
+%\end{center}
+%\end{figure*}
+
+
+
+
+
+\end{document}
+
+%http://www.plosone.org/article/info:doi/10.1371/journal.pone.0036527
