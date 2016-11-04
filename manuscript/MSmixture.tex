@@ -68,6 +68,12 @@ NOAA, 166 Water Street, Woods Hole, MA 02543 USA}
 \def\bfbeta{\boldsymbol{\beta}}
 \def\bfdelta{\boldsymbol{\delta}}
 \def\bfeta{\boldsymbol{\eta}}
+\def\bfphi{\pmb{\phi}}
+\def\bftheta{\pmb{\theta}}
+\def\bfpsi{\pmb{\psi}}
+\def\bfpi{\pmb{\pi}}
+\def\bfGamma{\pmb{\Gamma}}
+
 
 
 
@@ -100,23 +106,42 @@ This paper is structured as follows.  First, we introduce a general framework fo
 
 As with canonical MSMR models, we suppose that the investigator individually identifies animals through artificial or natural markings at a sequence of discrete sampling occasions (call these  $t \in \{ 1, 2, \hdots, T \}$). Animals may be encountered in one of $s \in \{ 1, 2, \hdots, S \}$ states, which may be geographical locations or dynamical states such as disease or breeding status. For instance, if sampling is conducted in three geographical states (A, B, and C) for 5 sampling occasions, the encounter history
 \begin{eqnarray*}
-  H_i = ABB0C
+  \label{eq:enc_hist}
+  H_i = \textrm{0AB0C}
 \end{eqnarray*}
-would indicate an animal that was first encountered in state A at time 1, was observed in state B at times 2 and 3, was not observed at time 4, and was observed in state C at time 5.  Our objective will be to estimate survival, state transition probabilities, and detection probabilities from these data when there is latent subpopulation structure.
+would indicate an animal that was first encountered in state A at time 2, was observed in state B at time 3, was not observed at time 4, and was observed in state C at time 5.  Our objective will be to estimate survival, state transition probabilities, and detection probabilities from these data when there is latent subpopulation structure.
 
 \subsubsection{Notation and basic model structure}
 
-We describe multistate mixture models in similar notation to that typically used for MSMR data (Table \ref{tab:notation}). We assume that mixture (i.e. subpopulation) membership does not change over time; thus, transition probabilities among states are governed by mixture-specific survival and state transition probabilities.  
+We describe multistate mixture models in similar notation to that typically used for MSMR data (Table \ref{tab:notation}).  As with other extensions of the CJS model, we condition on the time of first capture when modeling the probability of each encounter history.
+We assume that mixture (i.e. subpopulation) membership does not change over time; thus, transition probabilities among states are governed by mixture-specific survival and state transition probabilities.  However, we must account for initial state probabilities since there is uncertainty about mixture membership.  For instance, we write the probability of the history in Eq. \ref{eq:enc_hist} as
+\begin{eqnarray*}
+  \textrm{Pr}(H_i = \textrm{0AB0C}) = \sum_m \pi_{A,2,m} \phi_{2,m}^{AB} p_{B,2,m} \left[ \sum_s \psi_{3,m}^{B,s} (1-p_{B,3,m}) \psi_{4,m}^{s,C} \right] p_{C,5,m}.
+\end{eqnarray*}
 
-
+Statistical inference about the parameters in Table \ref{tab:notation} can be performed using a product multinomial likelihood function, 
+\begin{eqnarray*}
+  L = \prod_i \textrm{Pr}(H_i).
+\end{eqnarray*}
+Efficient evaluation of this likelihood can be accomplished using the so-called forward algorithm commonly used to in HMM applications \citep{ZucchiniMacDonald2009,Laake2013}.  In the present development, we assume a one-to-one mapping between states and observations (i.e. we assume the underlying state can be determined with certainty).
 
 \subsubsection{Model assumptions}
 
-No switching among population subgroups; ``instantaneous" sampling
+Our modeling approach makes a number of assumptions, many of which are common to MSMR models in general.  These include
+\begin{enumerate}
+  \item Marks are not lost or misread,
+  \item Sampling occurs instantaneously,
+  \item Fates of individuals are conditionally independent,
+  \item Animals do not emigrate from the areas being studied, and
+  \item State transition probabilities, survival, and detection probabilities are the same for animals that are members of the same population subgroup (mixture).
+\end{enumerate}
+Many of these assumptions tend to be violated in real world applications.  For instance, sampling is never truly instantaneous, but this does not in general bias survival greatly \citep{OBrienEtAl2005}.  
+
+\subsubsection{Derived parameters}
 
 \subsubsection{Computing}
 
-Several software packages are available to fit hidden Markov models to capture-recapture data, either in a univariate \citep[e.g. E-SURGE[]{ChoquetEtAl2009b)} or a multivariate state framework \citep[\texttt{marked}][]{LaakeEtAl2013,JohnsonEtAl2016}.  Analyses reported in this paper use the \texttt{marked} package and can be implemented in the R programming environment \citep{RTeam2015}
+Several software packages are available to fit hidden Markov models to capture-recapture data, either in a univariate \citep[e.g. E-SURGE[]{ChoquetEtAl2009b)} or a multivariate state framework \citep[\texttt{marked}][]{LaakeEtAl2013,JohnsonEtAl2016}.  Analyses reported in this paper use the \texttt{marked} package and can be implemented in the R programming environment \citep{RTeam2015}.
 
 \subsection{Simulation study}
 
@@ -152,14 +177,14 @@ R scripts and data necessary to recreate analyses have been collated into an R p
   \hline
    Quantity & Definition \\
   \hline
-   \textbf{A. Statistics}  &   \\ 
+   \textbf{A. Statistics}  &   \\
   $H_i$ & Encounter history for individual $i$ \\
-  $S$ & Number of states \\
+  $S$ & Number of states (with state $S$ being reserved for the absorbing state, ``dead") \\
   $T$ & Number of sampling occasions \\
   $M$ & Number of mixtures (population subgroups) \\
   \textbf{B. Parameters } & \\
   $\pi_{s,t,m}$ & Probability that an individual first captured in state $s$ at time $t$ is a member of population subgroup $m$ \\
-  $S_{s,t,m}$ & Probability that an animal alive and in state $s$ at time $t$ and from population subgroup $m$ is alive at time $t+1$. \\
+  $\theta_{s,t,m}$ & Probability that an animal alive and in state $s$ at time $t$ and from population subgroup $m$ is alive at time $t+1$. \\
   $\psi_{t,m}^{s_1,s_2}$ & Probability that an animal of population subgroup $m$ that is alive and in state $s_1$ at time $t$ is in state $s_2$ at time $(t+1)$, given that it survives from $t \rightarrow (t+1)$ \\
   $\phi_{t,m}^{s_1,s_2}$ & It will sometimes be convenient to use the product $\phi_{t,m}^{s_1,s_2} = S_{s,t,m} \psi_{t,m}^{s_1,s_2}$ \\
   $p_{s,t,m}$ & Probability that a member of population subgroup $m$ is detected at time $t$ given that they are in state $s$.  \\
