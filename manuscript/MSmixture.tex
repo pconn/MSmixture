@@ -29,12 +29,12 @@ T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 \papertype{Article}
 
-\title{Using multistate mark-recapture mixture models to account for latent subpopulation structure in survival and state transition probabilities: North Atlantic right whales \footnotemark[2]}
+\title{Using multistate mark-recapture mixture models to estimate latent subpopulation structure in survival and state transition probabilities: North Atlantic right whales \footnotemark[2]}
 
 \author{Paul B. Conn\affil{1}\corrauth, David L. Miller \affil{2}, Devin S. Johnson\affil{1}, Richard M. Pace III\affil{2}, Paul R. Wade\affil{1}, Kenady Wilson\affil{1}, and Peter J. Corkeron \affil{2}}
 
 
-\address{\affilnum{1}Marine Mammal Laboratory, Alaska Fisheries Science Center, National Marine Fisheries Service, NOAA, 7600 Sand Point Way NE, Seattle, WA 98115 USA; \affilnum{2} Northeast Fisheries Science Center, National Marine Fisheries Service, NOAA
+\address{\affilnum{1}Marine Mammal Laboratory, Alaska Fisheries Science Center, National Marine Fisheries Service, NOAA, 7600 Sand Point Way NE, Seattle, WA 98115 USA; \affilnum{2} Northeast Fisheries Science Center, National Marine Fisheries Service,
 NOAA, 166 Water Street, Woods Hole, MA 02543 USA}
 
 \corraddr{paul.conn@noaa.gov}
@@ -71,7 +71,9 @@ NOAA, 166 Water Street, Woods Hole, MA 02543 USA}
 \def\bfphi{\pmb{\phi}}
 \def\bftheta{\pmb{\theta}}
 \def\bfpsi{\pmb{\psi}}
+\def\bfPsi{\pmb{\Psi}}
 \def\bfpi{\pmb{\pi}}
+\def\bfp{{\bf p}}
 \def\bfGamma{\pmb{\Gamma}}
 
 
@@ -91,7 +93,7 @@ The endangered North Atlantic right whale (\textit{Eubalaena glacialis}; hereaft
 
 Although CJS and MSMR estimates have proved useful for conservation and management, there has been some speculation that the analyses conducted with these models may not adequately capture heterogeneity in resighting and availability patterns \citep{ClaphamEtAl2002}.  For instance, original estimates of survival from CJS models \citep{CaswellEtAl1999} evidenced strong support for models in which capture probability was a logit-linear function of an "offshore index" - the proportion of years for which a particular whale had only been observed in offshore sites.  Such sites received less survey effort than sites closer to shore, particularly in the mid-1990s.  In an unpublished manuscript, \citet{WadeClaphamUnpublished} suggested that Caswell et al.'s (1999) approach may have not been sufficient to adequately address heterogeneity in the seasonal patterns of attendance exhibited by whales with different migratory strategies.  Instead, Wade and Clapham (Unpublished) employed cluster analysis to group whales with similar migratory behavior prior to running a CJS-based survival analysis, finding support for models with four clusters of whales with distinct movement and observation patterns.  These groups also exhibited biologically meaningful differences in survival.
 
-Despite the importance of detection heterogeneity on survival, which can result in negatively biased survival estimates \citep{AbadiEtAl2013}, there has been little published work in the primary literature investigating the consequences of detection heterogeneity on NARW survival since the first estimates of \citet{CaswellEtAl1999}.  Part of the reason for this might have to do with violation of statistical mechanics.  Specifically, it is generally not appropriate to construct a predictive covariate for use in a statistical model based on knowledge of the response variable.  For instance, the clustering approach used by \citet{WadeClaphamUnpublished} could possibly confound detection patterns with mortality if whales that died and had fewer detections were more often assigned to one particular cluster over another.  The ``offshore index" covariate used by \citet{CaswellEtAl1999} also suffers from this issue.  For instance, animals who are seen once by definition have an index covariate of 0.0 or 1.0, and will by assigned either maximum or minimum survival.
+Despite the importance of detection heterogeneity on survival, which negatively bias survival estimates \citep{AbadiEtAl2013}, there has been little published work in the primary literature investigating the consequences of detection heterogeneity on NARW survival since the first estimates of \citet{CaswellEtAl1999}.  Part of the reason for this might have to do with violation of statistical mechanics.  Specifically, it is generally not appropriate to construct a predictive covariate for use in a statistical model based on knowledge of the response variable.  For instance, the clustering approach used by \citet{WadeClaphamUnpublished} could possibly confound detection patterns with mortality if whales that died (and thus had fewer detections) were more often assigned to one particular cluster over another.  The ``offshore index" covariate used by \citet{CaswellEtAl1999} also suffers from this issue.  For instance, animals who are seen once by definition have an index covariate of 0.0 or 1.0, and will by assigned either maximum or minimum survival.
 
 Recent developments in mark-recapture modeling suggest a viable alternative.  For instance, capture-recapture data are increasingly analyzed using hidden Markov models \citep[HMMs][]{ZucchiniMacDonald2009} that allow the detection process to be linked to survival and movement processes in a more general way.  First applied to capture-recapture data by \citet{Pradel2005}, these models decouple detection types from underlying ``states" of the animal and formally permit uncertainty about an animal's underlying state.  Recently, \citet{JohnsonEtAl2016} extended this modeling type to multivariate states, which may or may not interact (e.g., location and tagging state of sea lions).  We propose to use this framework for estimation of survival and state transition probabilities when the membership among different latent population groups is unknown.
 
@@ -107,7 +109,7 @@ This paper is structured as follows.  First, we introduce a general framework fo
 As with canonical MSMR models, we suppose that the investigator individually identifies animals through artificial or natural markings at a sequence of discrete sampling occasions (call these  $t \in \{ 1, 2, \hdots, T \}$). Animals may be encountered in one of $s \in \{ 1, 2, \hdots, S \}$ states, which may be geographical locations or dynamical states such as disease or breeding status. For instance, if sampling is conducted in three geographical states (A, B, and C) for 5 sampling occasions, the encounter history
 \begin{eqnarray*}
   \label{eq:enc_hist}
-  H_i = \textrm{0AB0C}
+  H_i & = & \textrm{0AB0C}
 \end{eqnarray*}
 would indicate an animal that was first encountered in state A at time 2, was observed in state B at time 3, was not observed at time 4, and was observed in state C at time 5.  Our objective will be to estimate survival, state transition probabilities, and detection probabilities from these data when there is latent subpopulation structure.
 
@@ -116,14 +118,15 @@ would indicate an animal that was first encountered in state A at time 2, was ob
 We describe multistate mixture models in similar notation to that typically used for MSMR data (Table \ref{tab:notation}).  As with other extensions of the CJS model, we condition on the time of first capture when modeling the probability of each encounter history.
 We assume that mixture (i.e. subpopulation) membership does not change over time; thus, transition probabilities among states are governed by mixture-specific survival and state transition probabilities.  However, we must account for initial state probabilities since there is uncertainty about mixture membership.  For instance, we write the probability of the history in Eq. \ref{eq:enc_hist} as
 \begin{eqnarray*}
-  \textrm{Pr}(H_i = \textrm{0AB0C}) = \sum_m \pi_{A,2,m} \phi_{2,m}^{AB} p_{B,2,m} \left[ \sum_s \psi_{3,m}^{B,s} (1-p_{B,3,m}) \psi_{4,m}^{s,C} \right] p_{C,5,m}.
+  \textrm{Pr}(H_i = \textrm{0AB0C}) & = & \sum_m \pi_{A,2,m} \phi_{2,m}^{AB} p_{B,2,m} \left[ \sum_s \psi_{3,m}^{B,s} (1-p_{B,3,m}) \psi_{4,m}^{s,C} \right] p_{C,5,m}.
 \end{eqnarray*}
+Importantly, the probability of a given encounter history is the same as in canonical first-order Markov MSMR models \citep[e.g. as in][]{Brownie1993} if there is a single mixture.
 
-Statistical inference about the parameters in Table \ref{tab:notation} can be performed using a product multinomial likelihood function, 
+Statistical inference about the parameters in Table \ref{tab:notation} can be performed using a product multinomial likelihood function,
 \begin{eqnarray*}
-  L = \prod_i \textrm{Pr}(H_i).
+  L & = & \prod_i \textrm{Pr}(H_i).
 \end{eqnarray*}
-Efficient evaluation of this likelihood can be accomplished using the so-called forward algorithm commonly used to in HMM applications \citep{ZucchiniMacDonald2009,Laake2013}.  In the present development, we assume a one-to-one mapping between states and observations (i.e. we assume the underlying state can be determined with certainty).
+Efficient evaluation of this likelihood can be accomplished using the so-called forward algorithm commonly used to in HMM applications \citep{ZucchiniMacDonald2009,Laake2013}.  In the present development, we assume a one-to-one mapping between states and observations (i.e. we assume the underlying state can be determined with certainty). In a movement/migration scenario, this implies that geographical strata can always be determined with certainty, as is likely in scientific surveys. However, we assume that subpopulation membership is never directly observed.
 
 \subsubsection{Model assumptions}
 
@@ -135,19 +138,55 @@ Our modeling approach makes a number of assumptions, many of which are common to
   \item Animals do not emigrate from the areas being studied, and
   \item State transition probabilities, survival, and detection probabilities are the same for animals that are members of the same population subgroup (mixture).
 \end{enumerate}
-Many of these assumptions tend to be violated in real world applications.  For instance, sampling is never truly instantaneous, but this does not in general bias survival greatly \citep{OBrienEtAl2005}.  
+Many of these assumptions tend to be violated in real world applications.  For instance, sampling is never truly instantaneous, but this does not in general bias survival greatly \citep{OBrienEtAl2005}.
 
 \subsubsection{Derived parameters}
 
+In some cases, researchers may be interested in the proportion of the population that uses a given area $s$ at time $t$ that is a member of subpopulation $m$. Unfortunately, the mixture parameter $\pi_{s,t,m}$ cannot be interpreted in this manner, as it references the proportion of newly marked animals that belong to subpopulation $m$.  This quantity depends on (a) the proportion of each subpopulation that is marked, and (b) detection probabilities associated with each population subgroup.  However, if one is willing to make the untestable assumption that detection probabilities are the same for marked and unmarked animals, an estimator of the proportion of the population that is in subgroup 1 in the first sampling interval can be written as
+\begin{eqnarray*}
+   P_{s,1} & = & p_{s,1,2} \pi_{s,1,1} (p_{s,1,1}-\pi_{s,1,1}p_{s,1,1}+p_{s,1,2}\pi_{2,1,1})^{-1} \\
+\end{eqnarray*}
+for the case of $M=2$ mixtures.  However, population proportions are progressively more difficult to write down for greater number or mixtures.  In general, we cannot write down population proportions at later time periods without further data (e.g. on recruitment rates).
+
+
 \subsubsection{Computing}
 
-Several software packages are available to fit hidden Markov models to capture-recapture data, either in a univariate \citep[e.g. E-SURGE[]{ChoquetEtAl2009b)} or a multivariate state framework \citep[\texttt{marked}][]{LaakeEtAl2013,JohnsonEtAl2016}.  Analyses reported in this paper use the \texttt{marked} package and can be implemented in the R programming environment \citep{RTeam2015}.
+Several software packages are available to fit hidden Markov models to capture-recapture data, either in a univariate \citep[e.g. \texttt{E-SURGE};][]{ChoquetEtAl2009b} or a multivariate state framework \citep[\texttt{marked};][]{LaakeEtAl2013,JohnsonEtAl2016}.  Analyses reported in this paper use the \texttt{marked} package and can be implemented in the R programming environment \citep{RTeam2015}.
 
 \subsection{Simulation study}
+
+To demonstrate the viability of multistate mixture models, we conducted a small simulation study that encompassed three different scenarios for how populations were structured (fig. \ref{fig:migration}).  In particular, we considered scenarios that examined partial and divergent migration, as well as a scenario where subpopulations use the same geographical areas with different habitat preferences (we term this the ``overlapping" scenario). 
+
+In the partial migration scenario, residents stay in the same strata throughout the study, while migrants move seasonally (e.g. to summering areas as is common in many waterfowl populations; fig. \ref{fig:migration}).  For this scenario, we configured sampling to occur twice per year, corresponding to winter and summer, for five years.  Six-month survival probabilities were set to 0.95 for residents and 0.9 for migrants, and capture probabilities were set to 0.4 in the wintering area for both seasons and to 0.0 for the summering area (i.e. resighting only occurred on the wintering area).  Releases of newly marked animals occurred during the winter session only; 100 releases of residents and 50 releases of migrants occurred each year.  For this scenario, state transition probabilities, $\bfpsi$, were fixed; residents and migrants were assumed to have the transition matrices
+\begin{eqnarray*}
+  \bfPsi_1 = \left[ \begin{array}{cc} 1 & 0 \\ 0 & 0 \end{array} \right] 
+  \text{  and  } \bfPsi_2 = \left[ \begin{array}{cc} 0 & 1 \\ 1 & 0 \end{array} \right], 
+\end{eqnarray*}
+respectively.  Interest then focused on whether one could estimate differential survival of the two subpopulations when group membership could not be determined at the time of release or during winter resighting events.  For this scenario, we configured the estimation model such that survival ($\bftheta$) and detection probability ($\bfp$) were subpopulation specific, but time invariant.  Mixture probabilities, $\bfpi$, were also fixed to be constant over time.
+
+In the divergent migration scenario, animals of both subpopulations share a common strata (e.g. wintering area), but move seasonally to distinct strata (e.g. to summering areas); fig \ref{fig:migration}. This type of migratory strategy is common in both waterfowl and songbird populations where subpopulations share a common wintering area but are philopatric to different breeding areas.  For this scenario, we configured virtual releases of newly marked individuals to occur on wintering grounds for 5 consecutive winters; 50 individuals from each subpopulation were released in each year.  Resighting effort was applied to each strata, but varied by strata (0.4 for the wintering area, 0.2 for each summer breeding area).  One mixture was given a survival of 0.95, while the other received a survival of 0.9.  State transition matrices were again deterministic, with 
+\begin{eqnarray*}
+  \bfPsi_1 = \left[ \begin{array}{ccc} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 0 \end{array} \right]
+  \text{  and  } \bfPsi_2 = \left[ \begin{array}{ccc} 0 & 0 & 1 \\ 0 & 0 & 0 \\ 1 & 0 & 0 \end{array} \right].
+\end{eqnarray*}
+When estimating parameters of this model, we estimated separate detection parameters ($\bfp$) for each strata, and different survival parameters ($\bftheta$) for each subpopulation.  We set all parameters to be time invariant.
+
+In the final scenario (overlapping subpopulations; fig. \ref{fig:migration}), we implemented a considerably more parameterized model designed to challenge the multistate mixture model.  In this case, we once again considered two subpopulations moving between three geographical strata.  However, in this case, distributions completely overlapped; animals in each subpopulation simply had different state transition matrices:
+\begin{eqnarray*}
+  \bfPsi_1 = \left[ \begin{array}{ccc} 0.7 & 0.1 & 0.2 \\ 0.5 & 0.3 & 0.2 \\ 0.6 & 0.1 & 0.3 \end{array} \right]
+  \text{  and  } \bfPsi_2 = \left[ \begin{array}{ccc} 0.3 & 0.5 & 0.2 \\ 0.2 & 0.6 & 0.2 \\ 0.2 & 0.4 & 0.4 \end{array} \right].
+\end{eqnarray*}
+Survival ($\bftheta$) was set to 0.95 for mixture 1 and 0.9 for mixture 2.  We released 20 virtual individuals of each subpopulation in each time period and strata; detection probabilities were set to 0.7, 0.5, and 0.4 for for strata 1, 2, and 3 respectively.  Estimation proceeded by once again setting all parameters to be time invariant.  We set detection probabilites ($\bfp$) and mixture probabilities ($\bfpi$) to be strata-specific, while survival ($\bftheta$) and transition matrices ($\bfPsi$) were subpopulation-specific.
+
+For all scenarios, we conducted 1000 simulations and calculated proportional bias, coefficient of variation, and 95\% confidence interval coverage for all estimated parameters.  We fit all models using maximum likelihood via the \texttt{mvmscjs} \citep{JohnsonEtAl2016} in the R \texttt{marked} \citep{LaakeEtAl2013} package.  To diagnose which estimated mixture corresponded to the first subpopulation in the ``overlapping" scenario, we used the estimated transition probability $\hat{\psi}^{AA}$ as a discriminant: the mixture with the highest estimated $\psi^{AA}$ was associated with subpopulation 1 for computation of performance statistics.  Code to recreate our simulation study will be published to a publicly accessible repository upon acceptance, and is also available at \url{https://github.com/pconn/MSmixture/}.
 
 \subsection{Example: North Atlantic right whales}
 
 \section{Results}
+
+\subsection{Simulation study}
+
+Estimates were unbiased for all model parameters and all simulation scenarios.  Confidence interval coverage was close to nominal (i.e. 95\%) for all parameters.  Precision of parameter estimates was extremely high for the first two scenarios, but lower for the third (``overlapping") scenario (particularly for transition ($\bftheta$) and mixture probabilities ($\bfpi$).  Detailed results on bias, precision, and confidence interval coverage are presented in Appendix S1.
 
 \section{Discussion}
 
@@ -216,13 +255,12 @@ R scripts and data necessary to recreate analyses have been collated into an R p
 %\end{table}
 
 \pagebreak
-%\begin{figure*}
-%\begin{center}
-%\includegraphics[width=170mm]{Pref_sampling_diag.pdf}
-%\caption{A depiction of potential inferential obstacles when data from marked animals are %used to address mixed migration strategies. The migratory strategy of an animal will often %be unknown at the time of marking, but observational data may be used to help infer the %proportion of animals subscribing to each strategy, as well as the probability of %migrating for conditional migrants ($\theta_t$).
-%behavior} \label{fig:state_diagram}
-%\end{center}
-%\end{figure*}
+\begin{figure*}
+\begin{center}
+\includegraphics[width=170mm]{migration_diagrams.pdf}
+\caption{A depiction of alternate movement patterns examined in simulation study of multistate mixture model performance. Each scenario uses two mixtures (subpopulations), each of which subscribe to a different migration/movement strategy.  In partial migration (A), residents stay in the same strata throughout the study, while migrants move seasonally (as with many waterfowl and songbird populations).  In divergent migration (B), animals of both subpopulations share a common strata (e.g. wintering area) at one time of the year, but move seasonally to different strata (e.g. summering areas).  In the overlapping scenario (C), animals of both subpopulations all make use of three different strata, but have preferences for different areas.   Subpopulation membership of each animal is assumed unknown at the time of marking.} \label{fig:migration}
+\end{center}
+\end{figure*}
 
 
 

@@ -1,0 +1,153 @@
+% besdoc.tex V1.0, 17 March 2011
+
+\documentclass[times,mee,doublespace,]{besauth2}
+%%\documentclass[times,mee,]{besauth}
+
+\newcommand{\journalnamelc}{British Ecological Society}
+\newcommand{\journalabb}{British Ecological Society}
+\newcommand{\journalclassshort}{BES}
+%%\newcommand{\journalname}{British Ecological Society}
+\usepackage{epstopdf,comment}
+
+\usepackage{moreverb}
+
+\usepackage[colorlinks,bookmarksopen,bookmarksnumbered,citecolor=red,urlcolor=red]{hyperref}
+
+
+\usepackage{lineno}
+
+\newcommand\BibTeX{{\rmfamily B\kern-.05em \textsc{i\kern-.025em b}\kern-.08em
+T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\bibpunct[; ]{(}{)}{;}{}{}{,}
+
+\def\volumeyear{2015}
+\def\VOC{VO}
+
+\begin{document}
+
+\begin{center} \bf {\large Using multistate mark-recapture mixture models to estimate latent subpopulation structure in survival and state transition probabilities: North Atlantic right whales}
+
+\rm
+
+\vspace{0.7cm}
+Paul B. Conn$^{1,*}$, David L. Miller$^2$, Devin S. Johnson$^1$, Richard M. Pace III$^2$, Paul R. Wade$^1$, Kenady Wilson$^1$, and Peter J. Corkeron$^2$
+\end{center}
+\vspace{0.5cm}
+
+\rm
+\small
+
+
+$^1$ Marine Mammal Laboratory, Alaska Fisheries Science Center, NOAA, National Marine Fisheries Service, 7600 Sand Point Way NE, Seattle, WA 98115 USA; $^2$ Northeast Fisheries Science Center, National Marine Fisheries Service,
+NOAA, 166 Water Street, Woods Hole, MA 02543 USA
+
+$^*$paul.conn@noaa.gov
+
+\large
+\bigskip
+\centerline{Appendix S1: Detailed results from multistate mixture models simulation studies}
+\bigskip
+\small
+
+\linenumbers
+
+\def\VAR{{\rm Var}\,}
+\def\COV{{\rm Cov}\,}
+\def\Prob{{\rm P}\,}
+
+\begin{flushleft}
+
+\raggedbottom
+
+In this appendix, we provide details on bias, precision (standard error), and 95\% confidence coverage for multistate mixture simulations.
+
+\subsubsection*{Simulation scenario 1: partial migration}
+
+\begin{table}[ht]
+\caption{Mean estimates, precision (SE), and 95\% confidence interval coverage for the partial migration simulation scenario; results are from 817 simulation replicates. A total of 1000 simulations were were run but 183 resulted in poor optimizer performance (e.g. estimates on a boundary, non-invertible Hessian matrices).
+}
+\label{tab:partial}
+\raggedright
+\begin{tabular}{ccccc}
+  \hline
+  Parameter & True value & Mean estimate & SE & Coverage \\
+  \hline
+ $\theta_1$ & 0.95 & 0.948 & 0.011 & 0.945 \\
+ $\theta_2$ & 0.90 & 0.896 & 0.032 & 0.950 \\
+ $p_1$ & 0.4 & 0.403 & 0.015 & 0.955 \\
+ $p_2$  & 0.4 & 0.408 & 0.054 & 0.953 \\
+ $\pi$  & 0.333 & 0.334 & 0.034 & 0.988 \\
+ \hline
+\end{tabular}
+\\
+\end{table}
+
+\subsubsection*{Simulation scenario 2: divergent migration}
+
+\begin{table}[ht]
+\caption{Mean estimates, precision (SE), and 95\% confidence interval coverage for the divergent migration simulation scenario; results are from 1000 simulation replicates.
+}
+\label{tab:divergent}
+\raggedright
+\begin{tabular}{ccccc}
+  \hline
+  Parameter & True value & Mean estimate & SE & Coverage \\
+  \hline
+ $\theta_1$ & 0.95 & 0.951 & 0.020 & 0.941 \\
+ $\theta_2$ & 0.90 & 0.901 & 0.023 & 0.962 \\
+ $p_A$ & 0.4 & 0.399 & 0.022 & 0.952 \\
+ $p_B$  & 0.2 & 0.201 & 0.026 & 0.936  \\
+ $p_C$ & 0.2 & 0.203 & 0.030 & 0.949 \\
+ $\pi$  & 0.5 & 0.499& 0.062 & 0.959 \\
+ \hline
+\end{tabular}
+\\
+\end{table}
+
+\subsubsection*{Simulation scenario 3: overlapping population}
+
+\begin{table}[ht]
+\caption{Mean estimates, precision (SE), and 95\% confidence interval coverage for the overlapping population simulation scenario; results are from 926 simulation replicates. A total of 1000 simulations were were run but 74 resulted in poor optimizer performance (e.g. estimates on a boundary, non-invertible Hessian matrices).}
+\label{tab:partial}
+\raggedright
+\begin{tabular}{ccccc}
+  \hline
+  Parameter & True value & Mean estimate & SE & Coverage \\
+  \hline
+ $\theta_1$ & 0.95 & 0.952 & 0.013 & 0.950 \\
+ $\theta_2$ & 0.90 & 0.899 & 0.015 & 0.949 \\
+ $p_A$ & 0.7 & 0.706 & 0.062 & 0.943 \\
+ $p_B$ & 0.5 & 0.505 & 0.050 &  0.946 \\
+ $p_C$ & 0.4 & 0.417 & 0.169 & 0.935 \\
+ $\pi_A$  & 0.5 & 0.504 & 0.090 & 0.927 \\
+ $\pi_B$  & 0.5 & 0.502 & 0.094 & 0.909 \\
+ $\pi_C$  & 0.5 & 0.503 & 0.121 & 0.910 \\
+ $\psi_1^{AB}$ & 0.1 & 0.099  & 0.026 & 0.941 \\
+ $\psi_2^{AB}$ & 0.5 & 0.510 & 0.203 & 0.931 \\
+ $\psi_1^{AC}$ & 0.2 & 0.202 & 0.051 & 0.938 \\
+ $\psi_2^{AC}$ & 0.2 & 0.201 & 0.187 & 0.947 \\
+ $\psi_1^{BA}$ & 0.5 & 0.502 & 0.113 & 0.944 \\
+ $\psi_2^{BA}$ & 0.2 & 0.199 & 0.046 & 0.941 \\
+ $\psi_1^{BC}$ & 0.2 & 0.197 & 0.160 & 0.947 \\
+ $\psi_2^{BC}$ & 0.2 & 0.203 & 0.057 & 0.935 \\
+ $\psi_1^{CA}$ & 0.6 & 0.601 & 0.117 & 0.931 \\
+ $\psi_2^{CA}$ & 0.2 & 0.202 & 0.114 & 0.946 \\
+ $\psi_1^{CB}$ & 0.1 & 0.103 & 0.116 & 0.953 \\
+ $\psi_2^{CB}$ & 0.4 & 0.404 & 0.111 & 0.941 \\
+ \hline
+\end{tabular}
+\\
+\end{table}
+
+
+\bibliographystyle{bes}
+\bibliography{master_bib}
+
+\pagebreak
+
+
+\end{flushleft}
+\end{document}
+
+%http://www.plosone.org/article/info:doi/10.1371/journal.pone.0036527
