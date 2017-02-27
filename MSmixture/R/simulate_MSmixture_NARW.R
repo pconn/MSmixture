@@ -1,7 +1,7 @@
 #' function to simulate multistate mixture capture-recapture data
 #' @param t_steps Number of time steps
 #' @param N_releases A 3-d array specifying the number of releases by (suppopulation,stratum,time) 
-#' @param Psi A vectored list, where each list element gives a transition matrix for each subpopulation (mixture)
+#' @param Psi A list of lists; dimension Psi[[n_mixtures]][[2]], where each list element gives a transition matrix for each subpopulation (mixture).  Odd values given transitions to wintering strata, even values give transitions to summering strata
 #' @param Phi A matrix specifying survival of each population subgroup (column) by time (rows).
 #' @param P A matrix specifying detection probability by stratum (column) and time (rows)
 #' @param enc_hist_format Outputs encounter histories in format for multivariate state analysis in the marked package (enc_hist_format = 'marked'; default) or E-SURGE (enc_hist_format='esurge')
@@ -10,8 +10,8 @@
 #' @export
 #' @keywords encounter history, simulation
 #' @author Paul B. Conn
-simulate_MSmixture <- function(t_steps,N_releases,Psi,Phi,P,enc_hist_format="marked",fname=NULL){
-  n_strata = nrow(Psi[[1]])
+simulate_MSmixture_NARW <- function(t_steps,N_releases,Psi,Phi,P,enc_hist_format="marked",fname=NULL){
+  n_strata = nrow(Psi[[1]][[1]])
   if(n_strata>10)cat("ERROR: currently limited to 10 strata")
   n_mix = length(Psi)
   E_hists = matrix(0,sum(N_releases),t_steps)
@@ -28,8 +28,9 @@ simulate_MSmixture <- function(t_steps,N_releases,Psi,Phi,P,enc_hist_format="mar
               cur_st=istr
               for(irem in it:(t_steps-1)){
                 if(i_alive==1){
+                  Cur_psi = Psi[[imix]][[2-(irem %% 2)]] 
                   i_alive = rbinom(1,1,Phi[irem,imix])
-                  cur_st = sample(c(1:n_strata),1,prob=Psi[[imix]][cur_st,])
+                  cur_st = sample(c(1:n_strata),1,prob=Cur_psi[cur_st,])
                   if(i_alive==1)E_hists[counter+iind,irem+1]=cur_st*rbinom(1,1,P[irem+1,cur_st])
                 }
               }

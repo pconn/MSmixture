@@ -164,5 +164,5 @@ is.any.na <-function(x){
   if(cur.na>0)cur.na=1
   cur.na
 }
-
-
+NA_ind = apply(Result,1,is.any.na)
+colMeans(Result[-which(NA_ind==1),])
